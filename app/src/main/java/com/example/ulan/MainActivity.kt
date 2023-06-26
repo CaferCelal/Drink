@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.mission_view.view.*
 import java.io.InputStream
 import java.util.*
@@ -16,7 +18,11 @@ class MainActivity : AppCompatActivity() {
     private val twoPerson = arrayListOf<String>()
     private val onePersonPath = "onePersonMissions.txt"
     private val twoPersonPath = "twoPersonMissions.txt"
+    private val playerAndShotList = arrayListOf<Any>()
+    private lateinit var shotCounterAdapter :recyclerAdapterForShotCounter
+    private lateinit var layoutManager :LinearLayoutManager
     private val rnd = Random()
+
     private  final var blank = "_"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +30,24 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val playerList= intent.getStringArrayListExtra("playerList")
+
+        var i =0
+        while (i<playerList!!.size){
+            playerAndShotList.add(playerList.get(i))
+            i++
+        }
+        i=0
+        while (i<playerList.size){
+            playerAndShotList.add(0)
+            i++
+        }
+        shotCounterAdapter = recyclerAdapterForShotCounter(playerAndShotList)
+        layoutManager = LinearLayoutManager(this)
+
+        shotCounterRecycler.adapter =shotCounterAdapter
+        shotCounterRecycler.layoutManager=layoutManager
+
+
         fillList(onePerson,onePersonPath)
         fillList(twoPerson,twoPersonPath)
 
@@ -54,13 +78,13 @@ class MainActivity : AppCompatActivity() {
                     counter++
                 }
 
-                missionOnAlertBoxForTwo(finalMission,missionToDelete)
+                missionOnAlertBoxForTwo(finalMission,missionToDelete,twoPlayersArray[0])
             }
             else{
-                finalMission= finalMission.replace(blank,selectOnePlayer(
-                    playerList!!
-                ))
-                missionOnAlertBoxForOne(finalMission,missionToDelete)
+                val tempPlayer=selectOnePlayer(playerList!!)
+                finalMission= finalMission.replace(blank,tempPlayer)
+
+                missionOnAlertBoxForOne(finalMission,missionToDelete,tempPlayer)
             }
 
 
@@ -173,7 +197,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun missionOnAlertBoxForOne(mission: String,deleteString: String){
+    fun missionOnAlertBoxForOne(mission: String,deleteString: String,drinker :String){
         val builder = AlertDialog.Builder(this)
         val inflater = LayoutInflater.from(this)
         val View = inflater.inflate(R.layout.mission_view, null)
@@ -187,12 +211,23 @@ class MainActivity : AppCompatActivity() {
             alert.dismiss()
         }
         View.drinkBtn.setOnClickListener {
+            var i=0
+            var detect =0
+            while (i<playerAndShotList.size/2){
+                if (playerAndShotList.get(i).toString().equals(drinker)){
+                    detect =i
+                }
+                i++
+            }
+            playerAndShotList.set(detect+playerAndShotList.size/2,
+                playerAndShotList.get(detect+playerAndShotList.size/2).toString().toInt()+1)
+            shotCounterAdapter.notifyDataSetChanged()
             alert.dismiss()
         }
 
 
     }
-    fun missionOnAlertBoxForTwo(mission: String,deleteString: String){
+    fun missionOnAlertBoxForTwo(mission: String,deleteString: String,drinker: String){
         val builder = AlertDialog.Builder(this)
         val inflater = LayoutInflater.from(this)
         val View = inflater.inflate(R.layout.mission_view, null)
@@ -207,6 +242,17 @@ class MainActivity : AppCompatActivity() {
             alert.dismiss()
         }
         View.drinkBtn.setOnClickListener {
+            var i=0
+            var detect =0
+            while (i<playerAndShotList.size/2){
+                if (playerAndShotList.get(i).toString().equals(drinker)){
+                    detect =i
+                }
+                i++
+            }
+            playerAndShotList.set(detect+playerAndShotList.size/2,
+                playerAndShotList.get(detect+playerAndShotList.size/2).toString().toInt()+1)
+            shotCounterAdapter.notifyDataSetChanged()
             alert.dismiss()
         }
 
