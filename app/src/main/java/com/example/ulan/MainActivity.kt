@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     private val onePersonPath = "onePersonMissions.txt"
     private val twoPersonPath = "twoPersonMissions.txt"
     private val playerAndShotList = arrayListOf<Any>()
+    private val shotAndShotCounterList = arrayListOf<Any>()
     private lateinit var shotCounterAdapter :recyclerAdapterForShotCounter
     private lateinit var layoutManager :LinearLayoutManager
     private val rnd = Random()
@@ -41,6 +42,9 @@ class MainActivity : AppCompatActivity() {
             playerAndShotList.add(0)
             i++
         }
+        i=0
+
+
         shotCounterAdapter = recyclerAdapterForShotCounter(playerAndShotList)
         layoutManager = LinearLayoutManager(this)
 
@@ -50,6 +54,7 @@ class MainActivity : AppCompatActivity() {
 
         fillList(onePerson,onePersonPath)
         fillList(twoPerson,twoPersonPath)
+
 
         findViewById<Button>(R.id.changeBtn).setOnClickListener {
             var finalMission = getmission()
@@ -94,28 +99,13 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun selectShot():String{
 
 
+        return ""
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    fun fillList(ListName:ArrayList<String>,path:String){
+    private fun fillList(ListName:ArrayList<String>,path:String){
         var buffer: InputStream = this.assets.open(path)
         var text = buffer.bufferedReader().use{it.readText()}
         var lines    = text.split("\n")
@@ -124,7 +114,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun detectTwoOrOne(mission:String):Boolean{
+    private fun detectTwoOrOne(mission:String):Boolean{
         var counter=0
         var i=0
         while (i!=mission.toCharArray().size-1){
@@ -144,7 +134,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun getmission():String{
+    private fun getmission():String{
         var desicion = rnd.nextInt(onePerson.size+twoPerson.size-2)
         var mission =""
         if (onePerson.isEmpty()){
@@ -180,12 +170,12 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun selectOnePlayer(playerList: ArrayList<String>): String {
+    private fun selectOnePlayer(playerList: ArrayList<String>): String {
         var randomPlayer = playerList.get(rnd.nextInt(playerList.size))
         return randomPlayer
     }
 
-    fun selectTwoPlayers(playerList:ArrayList<String>): Array<String> {
+    private fun selectTwoPlayers(playerList:ArrayList<String>): Array<String> {
         var firstPlayer =selectOnePlayer(playerList)
         var secondPlayer = ""
         do {
@@ -197,7 +187,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun missionOnAlertBoxForOne(mission: String,deleteString: String,drinker :String){
+    private fun missionOnAlertBoxForOne(mission: String,deleteString: String,drinker :String){
         val builder = AlertDialog.Builder(this)
         val inflater = LayoutInflater.from(this)
         val View = inflater.inflate(R.layout.mission_view, null)
@@ -227,7 +217,7 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-    fun missionOnAlertBoxForTwo(mission: String,deleteString: String,drinker: String){
+    private fun missionOnAlertBoxForTwo(mission: String,deleteString: String,drinker: String){
         val builder = AlertDialog.Builder(this)
         val inflater = LayoutInflater.from(this)
         val View = inflater.inflate(R.layout.mission_view, null)

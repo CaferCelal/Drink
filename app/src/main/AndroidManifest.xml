@@ -13,7 +13,7 @@
         android:theme="@style/Theme.İçUlan"
         tools:targetApi="31">
         <activity
-            android:name=".getPlayer"
+            android:name=".welcome"
             android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"
@@ -25,12 +25,36 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".Settings"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
+        <activity
+            android:name=".getShot"
+            android:exported="false">
+
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+
+        </activity>
+        <activity
+            android:name=".getPlayer"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
 
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
 
         </activity>
     </application>
