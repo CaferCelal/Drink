@@ -6,19 +6,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".getShot"
-    android:padding="30sp">
+    android:padding="30sp"
+    android:background="@drawable/background">
     <TextView
         android:textSize="18sp"
         android:id="@+id/topTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:text="Lütfen elinizdeki shotları +'ya basarak giriniz"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="20dp"
         android:id="@+id/getShotRecycler"
         android:layout_width="0dp"
         android:layout_height="0dp"

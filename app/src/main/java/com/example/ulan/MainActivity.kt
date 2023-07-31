@@ -1,37 +1,45 @@
 package com.example.ulan
 
+import android.net.Uri.Builder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.Button
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.basic_textview_alert.view.*
+import kotlinx.android.synthetic.main.basic_textview_alert.view.ok
 import kotlinx.android.synthetic.main.mission_view.view.*
+import kotlinx.android.synthetic.main.voice.view.*
 import java.io.InputStream
-import java.util.*
 import kotlin.collections.ArrayList
-
+import kotlin.random.Random
 class MainActivity : AppCompatActivity() {
+    // the arraylist that holds missions for first person
     private val onePerson = arrayListOf<String>()
     private val twoPerson = arrayListOf<String>()
     private val onePersonPath = "onePersonMissions.txt"
     private val twoPersonPath = "twoPersonMissions.txt"
     private val playerAndShotList = arrayListOf<Any>()
+    private val playerAndPlayerCounterList = arrayListOf<Any>()
     private val shotAndShotCounterList = arrayListOf<Any>()
     private lateinit var shotCounterAdapter :recyclerAdapterForShotCounter
     private lateinit var layoutManager :LinearLayoutManager
-    private val rnd = Random()
+    private val rnd = Random
 
     private  final var blank = "_"
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         val playerList= intent.getStringArrayListExtra("playerList")
-
+        val shotList = intent.getStringArrayListExtra("shotList")
         var i =0
         while (i<playerList!!.size){
             playerAndShotList.add(playerList.get(i))
@@ -43,7 +51,25 @@ class MainActivity : AppCompatActivity() {
             i++
         }
         i=0
-
+        while (i<shotList!!.size){
+            shotAndShotCounterList.add(shotList.get(i))
+            i++
+        }
+        i=0
+        while (i<shotList.size){
+           shotAndShotCounterList.add(1)
+           i++
+        }
+        i=0
+        while (i<playerList.size){
+            playerAndPlayerCounterList.add(playerList.get(i))
+            i++
+        }
+        i=0
+        while (i<playerList.size){
+            playerAndPlayerCounterList.add(1)
+            i++
+        }
 
         shotCounterAdapter = recyclerAdapterForShotCounter(playerAndShotList)
         layoutManager = LinearLayoutManager(this)
@@ -82,11 +108,12 @@ class MainActivity : AppCompatActivity() {
                         }
                     counter++
                 }
-
+                incrementPlayerCounter(twoPlayersArray[0])
                 missionOnAlertBoxForTwo(finalMission,missionToDelete,twoPlayersArray[0])
             }
             else{
-                val tempPlayer=selectOnePlayer(playerList!!)
+                val tempPlayer=selectOnePlayer(playerAndPlayerCounterList)
+                incrementPlayerCounter(tempPlayer)
                 finalMission= finalMission.replace(blank,tempPlayer)
 
                 missionOnAlertBoxForOne(finalMission,missionToDelete,tempPlayer)
@@ -99,11 +126,94 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun selectShot():String{
+    /**
+     * description
+     * @param requireShotList [ArrayList]
+     * @return [String] selected shot
+     */
+    private fun selectShot(requireShotList:ArrayList<Any>):String{
+        var i=0
+        var j=1
+        var counter =0
+        val shotList = arrayListOf<String>()
+        val shotCounterList = arrayListOf<Int>()
+        while (i<requireShotList.size/2){
+            shotList.add(requireShotList.get(i).toString())
+            i++
+        }
+        i=requireShotList.size/2
+        while (i<requireShotList.size){
+            shotCounterList.add(requireShotList.get(i).toString().toInt())
+            i++
+        }
+        shotCounterList.sort()
+        val sum =shotCounterList.size*(shotCounterList.size+1)/2
+        val randomDesicion =rnd.nextInt(1,sum+1)
+        i=0
 
-
-        return ""
+        while (true) {
+            when (randomDesicion) {
+                in sum -i..sum ->
+                    return shotList.get(shotList.size-1-counter)
+            }
+            j++
+            i+=j
+            counter++
+            if (i>sum){
+                break
+            }
+        }
+        return "error"
     }
+
+    private fun selectOnePlayer(requirePlayerList: ArrayList<Any>): String {
+        var i=0
+        var j=1
+        var counter =0
+        var playerList = arrayListOf<String>()
+        var playerCounterList = arrayListOf<Int>()
+        while (i<requirePlayerList.size/2){
+            playerList.add(requirePlayerList.get(i).toString())
+            i++
+        }
+        i=requirePlayerList.size/2
+        while (i<requirePlayerList.size){
+            playerCounterList.add(requirePlayerList.get(i).toString().toInt())
+            i++
+        }
+        playerCounterList.sort()
+        val sum = playerCounterList.size*(playerCounterList.size+1)/2
+        val randomDesicion =rnd.nextInt(1,sum+1)
+        i=0
+        while (true) {
+            when (randomDesicion) {
+                in sum -i..sum ->
+                    return playerList.get(playerList.size-1-counter)
+            }
+            j++
+            i+=j
+            counter++
+            if (i>sum){
+                break
+            }
+        }
+        return "error"
+    }
+
+    private fun selectTwoPlayers(playerList:ArrayList<String>): Array<String> {
+        var firstPlayer =selectOnePlayer(playerAndPlayerCounterList)
+        var secondPlayer = ""
+        do {
+            secondPlayer = selectOnePlayer(playerAndPlayerCounterList)
+
+        }while(firstPlayer ==secondPlayer)
+        val twoPlayersArray = arrayOf<String>(firstPlayer,secondPlayer)
+        return twoPlayersArray
+    }
+
+
+
+
 
     private fun fillList(ListName:ArrayList<String>,path:String){
         var buffer: InputStream = this.assets.open(path)
@@ -170,20 +280,32 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun selectOnePlayer(playerList: ArrayList<String>): String {
-        var randomPlayer = playerList.get(rnd.nextInt(playerList.size))
-        return randomPlayer
+
+
+
+
+
+    private fun incrementShotCounter(requireShotName:String){
+        var i=0
+        while (i<shotAndShotCounterList.size/2){
+            if (shotAndShotCounterList.get(i).toString().equals(requireShotName)){
+                shotAndShotCounterList.set(shotAndShotCounterList.size/2+i,
+                    shotAndShotCounterList.get(shotAndShotCounterList.size/2+i).toString().toInt() +1)
+            }
+            i++
+        }
+
     }
 
-    private fun selectTwoPlayers(playerList:ArrayList<String>): Array<String> {
-        var firstPlayer =selectOnePlayer(playerList)
-        var secondPlayer = ""
-        do {
-             secondPlayer = selectOnePlayer(playerList)
-
-        }while(firstPlayer ==secondPlayer)
-        val twoPlayersArray = arrayOf<String>(firstPlayer,secondPlayer)
-        return twoPlayersArray
+    private fun incrementPlayerCounter(requirePlayerName: String){
+        var i=0
+        while (i<playerAndPlayerCounterList.size/2){
+            if (playerAndPlayerCounterList.get(i).toString().equals(requirePlayerName)){
+                playerAndPlayerCounterList.set(playerAndPlayerCounterList.size/2+i,
+                    playerAndPlayerCounterList.get(playerAndPlayerCounterList.size/2+i).toString().toInt() +1)
+            }
+            i++
+        }
     }
 
 
@@ -201,37 +323,59 @@ class MainActivity : AppCompatActivity() {
             alert.dismiss()
         }
         View.drinkBtn.setOnClickListener {
+            alert.dismiss()
+            var shot =selectShot(shotAndShotCounterList)
             var i=0
             var detect =0
+            var sentence =""
             while (i<playerAndShotList.size/2){
                 if (playerAndShotList.get(i).toString().equals(drinker)){
                     detect =i
                 }
                 i++
             }
+
             playerAndShotList.set(detect+playerAndShotList.size/2,
                 playerAndShotList.get(detect+playerAndShotList.size/2).toString().toInt()+1)
-            shotCounterAdapter.notifyDataSetChanged()
-            alert.dismiss()
-        }
+            incrementShotCounter(shot)
+            sentence = drinker + " bir shot " + shot + " atsın."
+            val Builder = AlertDialog.Builder(this)
+            val Inflater = LayoutInflater.from(this)
+            val View = Inflater.inflate(R.layout.basic_textview_alert, null)
+            Builder.setView(View)
+            View.basicText.setText(sentence)
+            View.ok.setOnClickListener{
 
+            }
+            val Alert=Builder.create()
+            View.ok.setOnClickListener{
+                Alert.dismiss()
+            }
+            Alert.show()
+
+
+            shotCounterAdapter.notifyDataSetChanged()
+
+        }
 
     }
     private fun missionOnAlertBoxForTwo(mission: String,deleteString: String,drinker: String){
         val builder = AlertDialog.Builder(this)
         val inflater = LayoutInflater.from(this)
-        val View = inflater.inflate(R.layout.mission_view, null)
-        View.missionTextView.setText(mission)
-        builder.setView(View)
+        val view = inflater.inflate(R.layout.mission_view, null)
+        view.missionTextView.setText(mission)
+        builder.setView(view)
         val alert = builder.create()
 
 
         alert.show()
-        View.doBtn.setOnClickListener {
+        view.doBtn.setOnClickListener {
             twoPerson.remove(deleteString)
             alert.dismiss()
         }
-        View.drinkBtn.setOnClickListener {
+        view.drinkBtn.setOnClickListener {
+            alert.dismiss()
+            var shot =selectShot(shotAndShotCounterList)
             var i=0
             var detect =0
             while (i<playerAndShotList.size/2){
@@ -242,8 +386,22 @@ class MainActivity : AppCompatActivity() {
             }
             playerAndShotList.set(detect+playerAndShotList.size/2,
                 playerAndShotList.get(detect+playerAndShotList.size/2).toString().toInt()+1)
+
+            incrementShotCounter(shot)
+            var sentence = drinker + " bir shot " + shot + " atsın."
+            val Builder = AlertDialog.Builder(this)
+            val Inflater = LayoutInflater.from(this)
+            val View =Inflater.inflate(R.layout.basic_textview_alert,null)
+            Builder.setView(View)
+            val Alert =Builder.create()
+            View.basicText.setText(sentence)
+            View.ok.setOnClickListener{
+                Alert.dismiss()
+            }
+            Alert.show()
+
+
             shotCounterAdapter.notifyDataSetChanged()
-            alert.dismiss()
         }
 
 

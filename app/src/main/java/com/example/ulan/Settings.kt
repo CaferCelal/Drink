@@ -34,9 +34,11 @@ class Settings : AppCompatActivity() {
         contact.setOnClickListener {
             contactAction()
         }
+        /*
         exit.setOnClickListener{
             exitAction()
         }
+         */
 
     }
 

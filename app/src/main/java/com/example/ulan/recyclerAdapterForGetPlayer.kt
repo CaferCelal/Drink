@@ -3,12 +3,10 @@ package com.example.ulan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.get_player_alertbox.view.*
 import kotlinx.android.synthetic.main.recycler_row_for_add_people.view.*
-import java.nio.file.attribute.AclEntry.Builder
 
 class recyclerAdapterForGetPlayer(val requirePlayerList :ArrayList<String>)
     :RecyclerView.Adapter<recyclerAdapterForGetPlayer.adapterForGetPlayer>(){

@@ -4,12 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:background="@drawable/get_player_alertbox_color">
     <EditText
         android:id="@+id/playerNameOnAlertBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="5"/>
+        android:layout_weight="5"
+        android:textColor="@color/white"/>
     <ImageButton
         android:id="@+id/checkBtn"
         android:layout_width="0dp"

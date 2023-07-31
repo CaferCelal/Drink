@@ -1,18 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".getPlayer">
-
+    tools:context=".getPlayer"
+    android:padding="30sp"
+    android:background="@drawable/background">
+    <TextView
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="Lütfen oyuncu isimlerini +'ya basarak girin"
+        android:textColor="@color/white"
+        android:id="@+id/topTextView"
+        />
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="20dp"
         android:id="@+id/getPlayerRecycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topTextView"
         app:layout_constraintBottom_toTopOf="@id/bottomLinearLayout"/>
 
     <LinearLayout
@@ -40,8 +54,9 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/playBtn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Başla" />
+            android:layout_height="match_parent"
+            android:text="Başla"
+            android:textColor="@color/myBlue"/>
         <Space
             android:layout_width="0dp"
             android:layout_height="wrap_content"
