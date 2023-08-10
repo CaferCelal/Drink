@@ -1,10 +1,8 @@
 package com.example.ulan
 
-import android.net.Uri.Builder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,7 +10,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.basic_textview_alert.view.*
 import kotlinx.android.synthetic.main.basic_textview_alert.view.ok
 import kotlinx.android.synthetic.main.mission_view.view.*
-import kotlinx.android.synthetic.main.voice.view.*
 import java.io.InputStream
 import kotlin.collections.ArrayList
 import kotlin.random.Random
@@ -89,7 +86,7 @@ class MainActivity : AppCompatActivity() {
                 var counter = 0
                 var detector = 0
                 var i :String
-                var twoPlayersArray = selectTwoPlayers(playerList!!)
+                var twoPlayersArray = selectTwoPlayers()
                     while (counter != finalMission.toCharArray().size-1){
 
                         i = finalMission.toCharArray().get(counter).toString()
@@ -120,7 +117,6 @@ class MainActivity : AppCompatActivity() {
             }
 
 
-
         }
 
 
@@ -132,34 +128,34 @@ class MainActivity : AppCompatActivity() {
      * @return [String] selected shot
      */
     private fun selectShot(requireShotList:ArrayList<Any>):String{
-        var i=0
-        var j=1
-        var counter =0
+        var a=0
+        var b=1
+        var count =0
         val shotList = arrayListOf<String>()
         val shotCounterList = arrayListOf<Int>()
-        while (i<requireShotList.size/2){
-            shotList.add(requireShotList.get(i).toString())
-            i++
+        while (a<requireShotList.size/2){
+            shotList.add(requireShotList.get(a).toString())
+            a++
         }
-        i=requireShotList.size/2
-        while (i<requireShotList.size){
-            shotCounterList.add(requireShotList.get(i).toString().toInt())
-            i++
+        a=requireShotList.size/2
+        while (a<requireShotList.size){
+            shotCounterList.add(requireShotList.get(a).toString().toInt())
+            a++
         }
         shotCounterList.sort()
         val sum =shotCounterList.size*(shotCounterList.size+1)/2
         val randomDesicion =rnd.nextInt(1,sum+1)
-        i=0
+        a=0
 
         while (true) {
             when (randomDesicion) {
-                in sum -i..sum ->
-                    return shotList.get(shotList.size-1-counter)
+                in sum -a..sum ->
+                    return shotList.get(shotList.size-1-count)
             }
-            j++
-            i+=j
-            counter++
-            if (i>sum){
+            b++
+            a+=b
+            count++
+            if (a>sum){
                 break
             }
         }
@@ -181,14 +177,14 @@ class MainActivity : AppCompatActivity() {
             playerCounterList.add(requirePlayerList.get(i).toString().toInt())
             i++
         }
-        playerCounterList.sort()
+        playerCounterList.sortDescending()
         val sum = playerCounterList.size*(playerCounterList.size+1)/2
         val randomDesicion =rnd.nextInt(1,sum+1)
         i=0
         while (true) {
             when (randomDesicion) {
                 in sum -i..sum ->
-                    return playerList.get(playerList.size-1-counter)
+                    return playerList.get(playerList.size - 1 - counter)
             }
             j++
             i+=j
@@ -200,8 +196,10 @@ class MainActivity : AppCompatActivity() {
         return "error"
     }
 
-    private fun selectTwoPlayers(playerList:ArrayList<String>): Array<String> {
-        var firstPlayer =selectOnePlayer(playerAndPlayerCounterList)
+
+
+    private fun selectTwoPlayers(): Array<String> {
+        val firstPlayer =selectOnePlayer(playerAndPlayerCounterList)
         var secondPlayer = ""
         do {
             secondPlayer = selectOnePlayer(playerAndPlayerCounterList)
@@ -301,6 +299,7 @@ class MainActivity : AppCompatActivity() {
         var i=0
         while (i<playerAndPlayerCounterList.size/2){
             if (playerAndPlayerCounterList.get(i).toString().equals(requirePlayerName)){
+                playerAndPlayerCounterList[playerAndPlayerCounterList.size/2+i]
                 playerAndPlayerCounterList.set(playerAndPlayerCounterList.size/2+i,
                     playerAndPlayerCounterList.get(playerAndPlayerCounterList.size/2+i).toString().toInt() +1)
             }
@@ -404,6 +403,6 @@ class MainActivity : AppCompatActivity() {
             shotCounterAdapter.notifyDataSetChanged()
         }
 
-
     }
+
 }
