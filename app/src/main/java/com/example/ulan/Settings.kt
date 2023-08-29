@@ -34,11 +34,11 @@ class Settings : AppCompatActivity() {
         contact.setOnClickListener {
             contactAction()
         }
-        /*
-        exit.setOnClickListener{
+
+        exitFromSettings.setOnClickListener{
             exitAction()
         }
-         */
+
 
     }
 

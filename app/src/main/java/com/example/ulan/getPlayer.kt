@@ -9,7 +9,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_get_player.*
 import kotlinx.android.synthetic.main.get_player_alertbox.view.*
-import kotlinx.android.synthetic.main.recycler_row_for_add_people.view.*
 
 class getPlayer : AppCompatActivity() {
     val playerList = arrayListOf<String>()

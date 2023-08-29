@@ -20,8 +20,10 @@ class MainActivity : AppCompatActivity() {
     private val onePersonPath = "onePersonMissions.txt"
     private val twoPersonPath = "twoPersonMissions.txt"
     private val playerAndShotList = arrayListOf<Any>()
-    private val playerAndPlayerCounterList = arrayListOf<Any>()
+    private val playerAndPlayerCounterList = arrayListOf<Player>()
     private val shotAndShotCounterList = arrayListOf<Any>()
+
+
     private lateinit var shotCounterAdapter :recyclerAdapterForShotCounter
     private lateinit var layoutManager :LinearLayoutManager
     private val rnd = Random
@@ -59,14 +61,10 @@ class MainActivity : AppCompatActivity() {
         }
         i=0
         while (i<playerList.size){
-            playerAndPlayerCounterList.add(playerList.get(i))
+            playerAndPlayerCounterList.add(Player(playerList[i].toString(),1))
             i++
         }
-        i=0
-        while (i<playerList.size){
-            playerAndPlayerCounterList.add(1)
-            i++
-        }
+
 
         shotCounterAdapter = recyclerAdapterForShotCounter(playerAndShotList)
         layoutManager = LinearLayoutManager(this)
@@ -161,7 +159,7 @@ class MainActivity : AppCompatActivity() {
         }
         return "error"
     }
-
+    /*
     private fun selectOnePlayer(requirePlayerList: ArrayList<Any>): String {
         var i=0
         var j=1
@@ -195,6 +193,28 @@ class MainActivity : AppCompatActivity() {
         }
         return "error"
     }
+     */
+    private fun selectOnePlayer(playerList: ArrayList<Player>): String {
+        val rnd = Random(System.currentTimeMillis()) // Initialize random number generator
+
+        val sortedPlayers = playerList.sortedByDescending { it.shotCount } // Sort players by shot count in descending order
+
+        val sum = (1..sortedPlayers.size).sum() // Calculate the sum of natural numbers up to the number of players
+
+        val randomDecision = rnd.nextInt(1, sum + 1) // Generate a random decision
+
+        var accumulatedSum = 0
+        for ((index, player) in sortedPlayers.withIndex()) {
+            accumulatedSum += (index + 1) // Incrementally add the current player's index to the accumulated sum
+
+            if (randomDecision <= accumulatedSum) {
+                return player.playerName
+            }
+        }
+
+        return "error"
+    }
+
 
 
 
@@ -295,13 +315,12 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun incrementPlayerCounter(requirePlayerName: String){
+    private fun incrementPlayerCounter(playerName: String) {
         var i=0
-        while (i<playerAndPlayerCounterList.size/2){
-            if (playerAndPlayerCounterList.get(i).toString().equals(requirePlayerName)){
-                playerAndPlayerCounterList[playerAndPlayerCounterList.size/2+i]
-                playerAndPlayerCounterList.set(playerAndPlayerCounterList.size/2+i,
-                    playerAndPlayerCounterList.get(playerAndPlayerCounterList.size/2+i).toString().toInt() +1)
+
+        while (i<playerAndPlayerCounterList.size){
+            if (playerName == playerAndPlayerCounterList[i].playerName){
+                playerAndPlayerCounterList[i].shotCount++
             }
             i++
         }
