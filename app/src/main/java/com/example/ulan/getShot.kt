@@ -53,6 +53,7 @@ class getShot : AppCompatActivity() {
                 intent.putStringArrayListExtra("playerList",playerList)
                 intent.putStringArrayListExtra("shotList",shotList)
                 startActivity(intent)
+                finish()
             }
             else{
                 val toast = Toast.makeText(this,"En az 1 içki bulunmalıdır", Toast.LENGTH_SHORT)

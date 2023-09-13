@@ -40,7 +40,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
-        <androidx.appcompat.widget.AppCompatImageButton
+        <ImageView
             android:id="@+id/addBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -55,8 +55,10 @@
             android:id="@+id/playBtn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Başla"
-            android:textColor="@color/myBlue"/>
+            android:text="İleri"
+            android:textColor="@color/myBlue"
+            android:background="@color/white"
+            android:textStyle="bold"/>
         <Space
             android:layout_width="0dp"
             android:layout_height="wrap_content"

@@ -2,8 +2,10 @@ package com.example.ulan
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
@@ -22,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     private val playerAndShotList = arrayListOf<Any>()
     private val playerAndPlayerCounterList = arrayListOf<Player>()
     private val shotAndShotCounterList = arrayListOf<Any>()
+    private var onBackPressCounter : Long=0
 
 
     private lateinit var shotCounterAdapter :recyclerAdapterForShotCounter
@@ -29,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     private val rnd = Random
 
     private  final var blank = "_"
+
 
 
 
@@ -120,6 +124,18 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onBackPressed() {
+
+        if (onBackPressCounter +1000 >= System.currentTimeMillis()) {
+            super.onBackPressed()
+        } else {
+            Toast.makeText(this,"Çıkmak için tekrar bas",Toast.LENGTH_SHORT).show()
+        }
+        onBackPressCounter = System.currentTimeMillis()
+    }
+
+
+
     /**
      * description
      * @param requireShotList [ArrayList]
@@ -159,41 +175,7 @@ class MainActivity : AppCompatActivity() {
         }
         return "error"
     }
-    /*
-    private fun selectOnePlayer(requirePlayerList: ArrayList<Any>): String {
-        var i=0
-        var j=1
-        var counter =0
-        var playerList = arrayListOf<String>()
-        var playerCounterList = arrayListOf<Int>()
-        while (i<requirePlayerList.size/2){
-            playerList.add(requirePlayerList.get(i).toString())
-            i++
-        }
-        i=requirePlayerList.size/2
-        while (i<requirePlayerList.size){
-            playerCounterList.add(requirePlayerList.get(i).toString().toInt())
-            i++
-        }
-        playerCounterList.sortDescending()
-        val sum = playerCounterList.size*(playerCounterList.size+1)/2
-        val randomDesicion =rnd.nextInt(1,sum+1)
-        i=0
-        while (true) {
-            when (randomDesicion) {
-                in sum -i..sum ->
-                    return playerList.get(playerList.size - 1 - counter)
-            }
-            j++
-            i+=j
-            counter++
-            if (i>sum){
-                break
-            }
-        }
-        return "error"
-    }
-     */
+
     private fun selectOnePlayer(playerList: ArrayList<Player>): String {
         val rnd = Random(System.currentTimeMillis()) // Initialize random number generator
 

@@ -72,10 +72,10 @@
         android:layout_margin="40dp"
         android:orientation="horizontal"
         >
-        <ImageButton
+        <ImageView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:src="@drawable/howtoplay"
+            android:src="@drawable/how_to_play"
             android:layout_weight="1"
             android:id="@+id/howToPlay"
             />

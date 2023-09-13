@@ -3,26 +3,21 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="30dp"
+    android:layout_height="40dp"
     android:orientation="horizontal"
     android:padding="5dp"
     >
-    <androidx.cardview.widget.CardView
-        android:layout_width="30dp"
-        android:layout_height="match_parent"
-        android:layout_weight="5"
-        android:enabled="false"
-        app:cardCornerRadius="10dp"
-        >
+
         <EditText
+            android:padding="5dp"
+            android:layout_weight="5"
             android:id="@+id/playerName"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
             android:textSize="20sp"
-            android:background="@color/white"
+            android:background="@drawable/shot_counter_view"
             android:textColor="@color/myBlue"
             />
-    </androidx.cardview.widget.CardView>
 
 
     <ImageView
@@ -37,6 +32,6 @@
         android:layout_weight="1"
         android:id="@+id/deleteBtn"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:src="@drawable/color_thrash" />
 </LinearLayout>
